@@ -70,8 +70,7 @@ const chatContainer = document.getElementById("chat");
         if (chatContainer.contains(typingIndicator)) {
             chatContainer.removeChild(typingIndicator);
         }
-        appendMessage("Opss.", "bia");
-        appendMessage("Volto em breve !", "bia");
+        appendMessage("Opss, no momento tô offline.", "bia");
         console.error("Erro na requisição:", error);
       }
     }
