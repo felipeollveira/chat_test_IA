@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat com Bia 💙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ------------------- */
+    /* Reset & Variáveis   */
+    /* ------------------- */
+    :root {
+      --fundo: #f9fafb;
+      --fundo-app: #ffffff;
+      --balao-usuario: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --balao-bia: #f1f5f9;
+      --texto-primario: #1e293b;
+      --texto-secundario: #f8fafc;
+      --borda: #e2e8f0;
+      --sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --raio-borda: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--fundo);
+      color: var(--texto-primario);
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+
+    /* ------------------- */
+    /* Estrutura do App    */
+    /* ------------------- */
+    .app-container {
+      width: 100%;
+      height: 100vh;
+      background-color: var(--fundo-app);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+    }
+
+    /* Media query para telas maiores (desktop, tablets) */
+    @media (min-width: 600px) {
+      .app-container {
+        max-width: 420px;
+        max-height: 80vh;
+        border-radius: var(--raio-borda);
+        box-shadow: var(--sombra);
+        border: 1px solid var(--borda);
+      }
+    }
+
+    .app-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--borda);
+      text-align: center;
+    }
+
+    .app-header h1 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* ------------------- */
+    /* Mensagens do Chat   */
+    /* ------------------- */
+    .chat-messages {
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message {
+      padding: 12px 18px;
+      border-radius: var(--raio-borda);
+      max-width: 85%;
+      word-wrap: break-word;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-image: var(--balao-usuario);
+      color: var(--texto-secundario);
+      border-bottom-right-radius: 6px;
+    }
+
+    .bia {
+      align-self: flex-start;
+      background-color: var(--balao-bia);
+      color: var(--texto-primario);
+      border-bottom-left-radius: 6px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Estilização da barra de rolagem */
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    /* ------------------- */
+    /* Área de Input       */
+    /* ------------------- */
+    .chat-input-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--borda);
+    }
+
+    #userInput {
+      flex: 1;
+      background: var(--balao-bia);
+      border: 1px solid transparent;
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    #userInput:focus {
+      border-color: #a78bfa;
+      background-color: #fff;
+    }
+
+    #sendButton {
+      background: var(--balao-usuario);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      flex-shrink: 0; /* Impede que o botão seja espremido */
+    }
+
+    #sendButton:hover {
+      transform: scale(1.1);
+    }
+
+    #sendButton:active {
+      transform: scale(0.95);
+    }
+    
+    #sendButton svg {
+        width: 24px;
+        height: 24px;
+        margin-left: 2px; /* Ajuste fino para centralizar o ícone */
+    }
+
+  </style>
+</head>
+<body>
+
+  <main class="app-container">
+    <header class="app-header">
+      <h1>Conversa com Bia 💙</h1>
+    </header>
+
+    <div class="chat-messages" id="chat">
+      <div class="message bia">Oi! Eu sou a Bia 😊 Em que posso te ajudar hoje?</div>
+    </div>
+
+    <footer class="chat-input-area">
+      <input id="userInput" type="text" placeholder="Digite sua mensagem..." autocomplete="off" />
+      <button id="sendButton" onclick="sendMessage()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+        </svg>
+      </button>
+    </footer>
+  </main>
+
+  <script>
+
+    const chatContainer = document.getElementById("chat");
+    const input = document.getElementById("userInput");
+
+    // Função para adicionar mensagem ao chat
+    function appendMessage(text, sender) {
+      const msgWrapper = document.createElement("div");
+      msgWrapper.classList.add("message", sender);
+      
+      const textNode = document.createTextNode(text);
+      msgWrapper.appendChild(textNode);
+
+      chatContainer.appendChild(msgWrapper);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Função para enviar a mensagem com a requisição fetch
+    // Função para enviar a mensagem com a nova lógica de exibição
+    async function sendMessage() {
+      const userMessage = input.value.trim();
+      if (!userMessage) return;
+
+      appendMessage(userMessage, "user");
+      input.value = "";
+      input.focus();
+
+      // Adiciona um feedback visual de que a IA está "digitando"
+      const typingIndicator = document.createElement("div");
+      typingIndicator.classList.add("message", "bia");
+      typingIndicator.textContent = "Bia está digitando...";
+      chatContainer.appendChild(typingIndicator);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      try {
+        const response = await fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: userMessage }),
+        });
+
+        // Remove o indicador de "digitando"
+        chatContainer.removeChild(typingIndicator);
+
+        if (!response.ok) {
+          appendMessage("Desculpe, não consegui me conectar. 😢", "bia");
+          return;
+        }
+
+        const data = await response.json();
+        const fullResponse = data.response;
+
+        // --- INÍCIO DA NOVA LÓGICA ---
+
+        // 1. Divide a resposta completa em frases, mantendo o ponto final.
+        // A expressão regular /(?<=\.)\s*/ divide o texto APÓS cada ponto,
+        // removendo espaços em branco que possam vir depois.
+        const sentences = fullResponse.split(/(?<=\.)\s*/).filter(sentence => sentence.trim() !== "");
+
+        // 2. Exibe cada frase como uma mensagem separada com um atraso.
+        for (const sentence of sentences) {
+          appendMessage(sentence.trim(), "bia");
+          // Pausa por 800 milissegundos antes de mostrar a próxima mensagem
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        // --- FIM DA NOVA LÓGICA ---
+
+      } catch (error) {
+        // Remove o indicador de "digitando" em caso de erro também
+        if (chatContainer.contains(typingIndicator)) {
+            chatContainer.removeChild(typingIndicator);
+        }
+        appendMessage("Não foi possível conectar à Bia. Verifique se o servidor local está rodando.", "bia");
+        console.error("Erro na requisição:", error);
+      }
+    }
+
+    // Pressionar o botão também envia a mensagem
+    document.getElementById("sendButton").addEventListener("click", sendMessage);
+    </script>
+    
+</body>
+</html>
