@@ -70,7 +70,8 @@ const chatContainer = document.getElementById("chat");
         if (chatContainer.contains(typingIndicator)) {
             chatContainer.removeChild(typingIndicator);
         }
-        appendMessage("Não foi possível conectar à Bia. Verifique se o servidor local está rodando.", "bia");
+        appendMessage("Opss.", "bia");
+        appendMessage("Volto em breve !", "bia");
         console.error("Erro na requisição:", error);
       }
     }
