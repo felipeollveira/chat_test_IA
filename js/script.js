@@ -19,12 +19,12 @@
         });
     }
 
-    // Gera um ID único quando a página carrega e o armazena
+    // Gera um ID único quando a página carrwga
     const conversationId = generateUUID();
 
 
 
-    // Função para adicionar uma bolha de mensagem ao chat
+    // Função para adicionar uma bolha de mensagem chat
     function appendMessage(text, sender) {
       const msgWrapper = document.createElement("div");
       msgWrapper.classList.add("message", sender);
@@ -44,7 +44,7 @@
       input.focus();
       sendButton.disabled = true;
 
-      // Adiciona o indicador de digitação animado
+      // refazer animação digitando
       const typingIndicator = appendMessage("", "bia");
 
       typingIndicator.innerHTML = `
@@ -70,9 +70,9 @@
           return;
         }
 
-        // --- INÍCIO DA NOVA LÓGICA ---
+ 
 
-        // 1. Acumula a resposta completa do stream em segundo plano
+        // 1. Acumula a resposta completa do stream
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let fullResponseText = "";
@@ -99,7 +99,7 @@
           }
         }
 
-        // 2. Remove o indicador de "digitando" agora que temos a resposta completa
+        // 2. Remove a animacazao "digitndo" com a resposta completa
         chatContainer.removeChild(typingIndicator);
 
         // 3. Divide a resposta em frases e exibe uma por uma
@@ -111,7 +111,7 @@
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
         
-        // --- FIM DA NOVA LÓGICA ---
+  
 
       } catch (error) {
         if (chatContainer.contains(typingIndicator)) {
